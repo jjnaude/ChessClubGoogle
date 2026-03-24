@@ -1,0 +1,79 @@
+{
+  "entities": {
+    "Player": {
+      "title": "Player",
+      "description": "A chess player in the club",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "isPresent": { "type": "boolean" },
+        "rankings": {
+          "type": "object",
+          "properties": {
+            "classical": { "type": "number" },
+            "rapid": { "type": "number" },
+            "blitz": { "type": "number" },
+            "bullet": { "type": "number" },
+            "chess960": { "type": "number" }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "isPresent", "rankings"]
+    },
+    "Game": {
+      "title": "Game",
+      "description": "A recorded chess game",
+      "type": "object",
+      "properties": {
+        "whitePlayerId": { "type": "string" },
+        "blackPlayerId": { "type": "string" },
+        "result": { "type": "string", "enum": ["white", "black", "draw", "cancelled"] },
+        "ladderType": { "type": "string", "enum": ["classical", "rapid", "blitz", "bullet", "chess960"] },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["whitePlayerId", "blackPlayerId", "result", "ladderType", "timestamp"]
+    },
+    "Pairing": {
+      "title": "Pairing",
+      "description": "A proposed pairing for a round",
+      "type": "object",
+      "properties": {
+        "whitePlayerId": { "type": "string" },
+        "blackPlayerId": { "type": "string" },
+        "ladderType": { "type": "string" },
+        "status": { "type": "string", "enum": ["draft", "published", "completed", "finalized", "cancelled"] }
+      },
+      "required": ["whitePlayerId", "blackPlayerId", "ladderType", "status"]
+    },
+    "Ban": {
+      "title": "Ban",
+      "description": "A limitation preventing two players from being paired",
+      "type": "object",
+      "properties": {
+        "player1Id": { "type": "string" },
+        "player2Id": { "type": "string" }
+      },
+      "required": ["player1Id", "player2Id"]
+    },
+    "User": {
+      "title": "User",
+      "description": "A user account linked to one or more players",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "playerIds": { "type": "array", "items": { "type": "string" } },
+        "role": { "type": "string", "enum": ["admin", "user"] },
+        "isApproved": { "type": "boolean" }
+      },
+      "required": ["email", "playerIds", "role", "isApproved"]
+    }
+  },
+  "firestore": {
+    "/players": { "schema": "Player", "description": "List of all players" },
+    "/games": { "schema": "Game", "description": "History of all games" },
+    "/pairings": { "schema": "Pairing", "description": "Current round pairings" },
+    "/bans": { "schema": "Ban", "description": "Pairing restrictions" },
+    "/users": { "schema": "User", "description": "User accounts and roles" }
+  }
+}

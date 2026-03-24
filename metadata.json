@@ -1,0 +1,5 @@
+{
+  "name": "Chess Ladder Club",
+  "description": "A mobile-first app for managing a chess club, featuring multiple ladders, pairing generation, and player stats.",
+  "requestFramePermissions": []
+}
